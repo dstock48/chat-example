@@ -8,10 +8,21 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
+
   socket.on('chat message', function(msg){
     io.emit('chat message', msg);
   });
+
+  socket.broadcast.emit('newUser' ,{
+    msg: '**New User Connected!**'
+  });
+
+  socket.on('isTyping', (msg) => {
+    io.emit('isTyping', msg)
+  })
+
 });
+
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
